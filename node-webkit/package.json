@@ -1,0 +1,14 @@
+{
+  "name": "Notedown",
+  "main": "app/notedown.html",
+  "single-instance": false,
+  "window": {
+    "show": false,
+    "position": "center",
+    "width": 1000,
+    "min_width": 770,
+    "min_height": 400,
+    "height": 800,
+    "toolbar": true
+  }
+}
