@@ -4,6 +4,7 @@ $purple: #8e44ad;
 $green: #27ae60;
 $red: #e74c3c;
 $orange: #e67e22;
+$yellow: #f1c40f;
 
 body {
 	margin: 0;
@@ -83,6 +84,26 @@ body {
 		margin-right: -15px;
 	}
 
+	.note-active-red:after {
+		background: $red;
+	}
+
+	.note-active-blue:after {
+		background: $blue;
+	}
+
+	.note-active-purple:after {
+		background: $purple;
+	}
+
+	.note-active-green:after {
+		background: $green;
+	}
+
+	.note-active-orange:after {
+		background: $orange;
+	}
+
 	.note-new {
 		padding: 40px 0;
 		height: 150px;
@@ -97,6 +118,13 @@ body {
 
 	.note-new:hover {
 		background: #ddd;
+	}
+
+	.note-delete {
+		margin-left: -100%;
+		height: 0;
+		padding: 0;
+		opacity: 0;
 	}
 
 	.note-blue {
@@ -134,10 +162,28 @@ body {
 	box-sizing: border-box;
 	padding: 0 25px;
 	overflow-y: scroll;
+	overflow-x: hidden;
 
 	@media all and (min-width: 1200px) {
 		width: 100%;
 		padding: 0 35px 0 390px;
+	}
+
+	.note-current-view {
+		transition: 0.3s all;
+		overflow-x: hidden;
+	}
+
+	.fadeOut {
+		position: absolute;
+		margin-left: 100%;
+		opacity: 0;
+	}
+
+	.fadeIn {
+		position: absolute;
+		margin-left: 0;
+		opacity: 1;
 	}
 
 	header {
@@ -223,6 +269,152 @@ body {
 
 }
 
+
+
+.note-edit {
+	z-index: 10;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(255,255,255,0.9);
+	box-sizing: border-box;
+	padding: 30px;
+	opacity: 0;
+	transition: 0.3s all;
+
+	header {
+		position: absolute;
+		top: 20px;
+		right: 30px;
+		cursor: pointer;
+	}
+
+	input {
+		width: 99%;
+		display: block;
+		font-size: 28px;
+		font-weight: 500px;
+		background: rgba(255,255,255,0);
+		color: #444;
+		font-family: Open Sans;
+		border-style: none;
+		padding-bottom: 10px;
+		box-sizing: border-box;
+		border-bottom: 1px solid rgba(255,255,255,0);
+	}
+
+	input:focus {
+		border-bottom: 1px solid #aaa;
+		outline: none
+	}
+
+	textarea {
+		width: 99%;
+		display: block;
+		font-size: 16px;
+		font-family: Open Sans;
+		color: #444;
+		height: 80%;
+		border-style: none;
+		margin-top: 5px;
+		resize: none;
+		background: rgba(255,255,255,0);
+	}
+	textarea:focus {
+		outline: none;
+	}
+
+	footer {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 66px;
+		background: #34495e;
+
+		.publish {
+			float: right;
+			display: block;
+			width: 175px;
+			height: 66px;
+			border-style: none;
+			font-family: Lato;
+			font-weight: 800;
+			text-transform: uppercase;
+			font-size: 16px;
+			background: #2c3e50;
+			transition: 0.5s all;
+			color: #fff;
+			cursor: pointer;
+		}
+
+		.publish:hover {
+			background: #34495e;
+		}
+
+		.colors {
+			float: left;
+
+			.block {
+				float: left;
+				width: 29px;
+				height: 29px;
+				display: block;
+				cursor: pointer;
+				transition: 0.5s all;
+			}
+
+			.block:hover {
+				opacity: 0.8;
+			}
+
+			.block-blue {
+				background: $blue;
+				border: 2px solid $blue;
+			}
+
+			.block-green {
+				background: $green;
+				border: 2px solid $green;
+			}
+
+			.block-orange {
+				background: $orange;
+				border: 2px solid $orange;
+			}
+
+			.block-purple {
+				background: $purple;
+				border: 2px solid $purple;
+			}
+			.block-red {
+				background: $red;
+				border: 2px solid $red;
+			}
+			.block-yellow {
+				background: $yellow;
+				border: 2px solid $yellow;
+			}
+
+			.block-selected {
+				border: 2px solid #000;
+			}
+
+		}
+
+	}
+
+}
+
+.edit-fadeIn {
+	opacity: 1;
+}
+
+.inactive {
+	left: -100%;
+}
 
 ::-webkit-scrollbar {
     width: 5px;

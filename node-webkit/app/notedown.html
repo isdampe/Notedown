@@ -3,49 +3,15 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="assets/css/notedown.css">
-	<title>Notedown</title>
+	<title>Notedown - Notes, markdownified.</title>
 </head>
 <body>
 
-	<aside class="note-list">
+	<aside class="note-list" id="note-list">
 
-		<div class="note-block note-blue">
-			<header>
-				<span data-rel="note-close" class="close">x</span>
-			</header>
-			<h2>Test note to do</h2>
-			<p class="meta">1 minute ago</p>
+		<div id="note-block-list">
 		</div>
-		<div class="note-block note-purple note-active">
-			<header>
-				<span data-rel="note-close" class="close">x</span>
-			</header>
-			<h2>Test note to do</h2>
-			<p class="meta">1 minute ago</p>
-		</div>
-		<div class="note-block note-green">
-			<header>
-				<span data-rel="note-close" class="close">x</span>
-			</header>
-			<h2>Test note to do</h2>
-			<p class="meta">1 minute ago</p>
-		</div>
-		<div class="note-block note-red">
-			<header>
-				<span data-rel="note-close" class="close">x</span>
-			</header>
-			<h2>Test note to do</h2>
-			<p class="meta">1 minute ago</p>
-		</div>
-		<div class="note-block note-orange">
-			<header>
-				<span data-rel="note-close" class="close">x</span>
-			</header>
-			<h2>Test note to do</h2>
-			<p class="meta">1 minute ago</p>
-		</div>
-
-		<div class="note-block note-new">
+		<div class="note-block note-new" id="note-add-new">
 			<h2>New +</h2>
 		</div>
 
@@ -53,9 +19,15 @@
 
 	<section class="note-view">
 		<header>
-			<span data-rel="close" class="close"><img src="assets/svg/gnome-close.svg" alt="Close" /></span>
+			<span data-rel="close" class="close inactive"><img src="assets/svg/gnome-close.svg" alt="Close" /></span>
 		</header>
 
+		<div id="note-current-view" class="note-current-view">
+			<p class="meta">Click on a note to open it.</p>
+		</div>
+
+		<footer><span data-rel="edit" class="edit" id="note-current-edit">Edit</span></footer>
+		<!--
 		<h1 class="title">Test note to do</h1>
 		<p class="meta">12 minutes ago</p>
 		<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
@@ -66,8 +38,37 @@
     </ul>
     <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
     <footer><span data-rel="edit" class="edit">Edit</span></footer>
+		-->
+
+	</section>
+
+	<section class="note-edit inactive" id="note-edit">
+
+		<header>
+			<span id="editor-close"><img src="assets/svg/gnome-close.svg" alt="Close" /></span>
+		</header>
+		
+		<input type="text" id="note-edit-title" placeholder="Enter your title..." />
+
+		<textarea id="note-edit-editor" placeholder="Enter your notes..."></textarea>
+
+		<footer>
+			<div class="colors">
+				<div data-rel="color" data-color="blue" class="block block-blue block-selected"></div>
+				<div data-rel="color" data-color="green" class="block block-green"></div>
+				<div data-rel="color" data-color="orange" class="block block-orange"></div>
+				<div class="cf"></div>
+				<div data-rel="color" data-color="purple" class="block block-purple"></div>
+				<div data-rel="color" data-color="red" class="block block-red"></div>
+				<div data-rel="color" data-color="yellow" class="block block-yellow"></div>
+			</div>
+
+			<button id="note-edit-publish" class="publish">Save note</button>
+		</footer>
+
 	</section>
 
 	<script src="script.js"></script>
+	<script src="assets/js/notedown.js"></script>
 </body>
 </html>
