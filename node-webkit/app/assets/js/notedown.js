@@ -1,32 +1,19 @@
 //Notedown.js
 //For local storage of notes.
 
+//Load the filesystem library.
+var fs = require('fs');
+
 //JSON structure.
 var notes = [];
+var nodes = [];
 
-notes[0] = {
-	title: "Test notes",
-	content: "Test notes.\n\n#Heading 1\nTest.",
-	updated: 1411374670,
-	color: "red",
-	id: 0
-};
+//The main noteDown object.
+//This controls almost everything.
+function noteDown( opts ) {
 
-notes[1] = {
-	title: "Markdown is sick",
-	content: "Test notes.",
-	updated: 1411374990,
-	color: "blue",
-	id: 1
-};
-
-//Startup.
-//Check for notes config file.
-//var noteConfig = getNotes();
-//if ( noteConfig ) { populateNotesSidebar(); activateMostRecentNote(); }
-function noteDown( na ) {
+	this.opts = opts;
 	
-	this.noteArray = na;
 	this.elements = {
 		noteList: document.getElementById("note-list"),
 		noteAddNew: document.getElementById("note-add-new"),
@@ -37,7 +24,8 @@ function noteDown( na ) {
 		noteEditorColor: document.getElementById("note-edit-color"),
 		noteEditorClose: document.getElementById("editor-close"),
 		noteCurrentEdit: document.getElementById("note-current-edit"),
-		aEls: document.querySelectorAll("[data-rel=color]")
+		aEls: document.querySelectorAll("[data-rel=color]"),
+		noteEditorSave: document.getElementById("note-edit-publish")
 	};
 	var activeNoteId = -1;
 
@@ -51,6 +39,65 @@ function noteDown( na ) {
 			notedown.syncColors();
 
 		});
+	}
+
+	this.elements.noteEditorSave.onclick = function(e) {
+		e.preventDefault();
+
+		//Get all values.
+		var title = notedown.elements.noteEditorTitle.value;
+		var content = notedown.elements.noteEditorContent.value;
+		var color = notedown.elements.noteEditorColor.value;
+
+		if ( title !== "" ) {
+
+			//Can save.
+			if ( activeNoteId === -1 ) {
+
+				//Create new object in array.
+				var noteId = notedown.addNotes({
+					title: title,
+					content: content,
+					updated: 1411374670,
+					color: color
+				});
+
+				//Insert into sidebar.
+				notedown.addNoteToSidebar( notes[noteId] );
+
+				notedown.activateNote( notes[noteId] );
+				notedown.switchActiveTabs( this, notes[noteId] );
+
+			} else {
+
+				//Save into existing object.
+				notes[activeNoteId].title = title;
+				notes[activeNoteId].content = content;
+				notes[activeNoteId].color = color;
+
+				notedown.activateNote( notes[activeNoteId] );
+				notedown.switchActiveTabs( this, notes[activeNoteId] );
+
+			}
+
+			//Save to disk.
+			notedown.writeCacheToDisk();
+
+			//Once everything is saved, reload entire sidebar.
+			notedown.sidebarEmpty();
+			
+			//Refill sidebar.
+			notedown.fillSidebar();
+
+
+		} else {
+			//Nothing to save. Just exit.
+
+		}
+
+
+		notedown.elements.noteEditor.className = "note-edit inactive";
+
 	}
 
 	this.elements.noteCurrentEdit.onclick = function(e) {
@@ -70,6 +117,9 @@ function noteDown( na ) {
 	this.elements.noteAddNew.onclick = function(e) {
 		e.preventDefault();
 
+		//Deactivate current view.
+		notedown.deactivateNote();
+		notedown.loseFocusOnNotes();
 		notedown.launchEditor(-1);
 
 	}
@@ -126,7 +176,12 @@ function noteDown( na ) {
 		noteDelete.className = "close";
 		noteDelete.innerHTML = "x";
 		var noteTitle = document.createElement("h2");
-		noteTitle.innerHTML = note.title;
+		var theTitle = note.title;
+		if ( theTitle.length > 20 ) {
+			theTitle = theTitle.substr(0,18) + "...";
+		}
+		noteTitle.innerHTML = theTitle;
+
 		var noteMeta = document.createElement("p");
 		noteMeta.className = "meta";
 		noteMeta.innerHTML = note.updated;
@@ -159,11 +214,23 @@ function noteDown( na ) {
 		//Add to list.
 		this.elements.noteList.insertBefore( noteElement, this.elements.noteAddNew );
 
+		noteElement.id = nodes.length;
+
+		//Push to array.
+		nodes.push( noteElement );
+
 	}
 
 	this.switchActiveTabs = function( tab, note ) {
 
-		//Is there another tab active?
+		notedown.loseFocusOnNotes();
+
+		//Activate this tab.
+		tab.className = tab.className + " note-active note-active-" + note.color;
+
+	}
+
+	this.loseFocusOnNotes = function() {
 		var currentMatches = document.querySelectorAll(".note-active");
 		for ( i=0; i<currentMatches.length; i++ ) {
 
@@ -171,10 +238,6 @@ function noteDown( na ) {
 			removeClass(currentMatches[i],"note-active");
 
 		}
-
-		//Activate this tab.
-		tab.className = tab.className + " note-active note-active-" + note.color;
-
 	}
 
 	this.deleteNote = function( note, noteElement ) {
@@ -184,10 +247,16 @@ function noteDown( na ) {
 
 		setTimeout(function(){
 			//Remove from list.
+			var dataID = noteElement.id;
 			noteElement.parentNode.removeChild(noteElement);
+
+			//Remove from nodes array.
+			nodes.splice( dataID, 1 );
+
 		}, 500);
 
 		var arrFind = 0;
+
 		//Remove from array.
 		for ( i=0; i<notes.length; i++ ) {
 			if ( notes[i].id === note.id ) {
@@ -200,7 +269,9 @@ function noteDown( na ) {
 			notes[i].id = i;
 		}
 
-		this.deactivateNote();
+		notedown.deactivateNote();
+		notedown.loseFocusOnNotes();
+		notedown.writeCacheToDisk();
 
 	}
 
@@ -248,28 +319,93 @@ function noteDown( na ) {
 
 	}
 
+	this.addNotes = function( noteObject ) {
+
+		var noteId = notes.length;
+		noteObject.id = noteId;
+		notes.push( noteObject );
+
+		return noteId;
+
+	}
+
+	this.sidebarEmpty = function() {
+
+		for ( i=0; i<nodes.length; i++ ) {
+			if ( nodes[i].parentNode !== null ) {
+				nodes[i].parentNode.removeChild(nodes[i]);
+			}
+		}
+
+		//The bar has been emptied. Redeclare the nodes array.
+		nodes = [];
+
+	}
+
+	this.fillSidebar = function() {
+
+		if ( notes.length > 0 ) {
+			for( i=0; i<notes.length; i++ ) {
+				notedown.addNoteToSidebar(notes[i]);
+			}
+		}
+
+		//Set active note class.
+		if ( activeNoteId !== -1 ) {
+			nodes[activeNoteId].className = nodes[activeNoteId].className + " note-active note-active-" + notes[activeNoteId].color;
+		}
+
+	}
+
+	this.writeCacheToDisk = function() {
+
+		//Convert the array to a json buffer.
+		var dataBuffer = JSON.stringify( notes );
+
+		//Write it to disk.
+		fs.writeFile( notedown.opts.filePath, dataBuffer, function(err){
+			if (err) {
+				alert("There was an error saving your file to " + notedown.opts.filePath );
+			}
+		} );
+		
+	}
+
+	this.readNotesFromDisk = function() {
+
+		//Is there a file?
+		if ( fs.existsSync( notedown.opts.filePath, function(){} ) ) {
+
+			//Ready the file.
+			var buffer = fs.readFileSync( notedown.opts.filePath, "utf8", function(err){});
+			
+			//Check for valid json.
+			try {
+        var json = JSON.parse( buffer );
+    	} catch (e) {
+        var json = -1;
+    	}
+
+    	if ( json !== -1 ) {
+    		//Valid json.
+    		notes = json;
+    	} else {
+    		//Invalid file.
+    		alert("Your data file is corrupt. We're going to automatically right over this. If you want to back it up, you should do so before saving any notes. You can find the file here.\n\n" + notedown.opts.filePath );
+    	}
+
+		}
+
+	}
+
 }
 
 //Create notedown object.
-var notedown = new noteDown( notes );
+var notedown = new noteDown({
+	filePath: "app/data/data.json"
+});
+
+notedown.readNotesFromDisk();
 
 //If there's notes, add them.
-if ( notes.length > 0 ) {
-	for( i=0; i<notes.length; i++ ) {
-		notedown.addNoteToSidebar(notes[i]);
-	}
-}
-
-
-function hasClass(ele,cls) {
-	return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
-}
-function addClass(ele,cls) {
-	if (!this.hasClass(ele,cls)) ele.className += " "+cls;
-}
-function removeClass(ele,cls) {
-	if (hasClass(ele,cls)) {
-		var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
-		ele.className=ele.className.replace(reg,' ');
-	}
-}
+notedown.fillSidebar();

@@ -47,6 +47,8 @@ body {
 
 		h2 {
 			margin: 6px 0 0 0;
+			width: 85%;
+			overflow: hidden;
 			font-weight: 100!important;
 			font-size: 22px;
 			@media all and (max-width: 850px) {
@@ -104,6 +106,10 @@ body {
 		background: $orange;
 	}
 
+	.note-active-yellow:after {
+		background: $yellow;
+	}
+
 	.note-new {
 		padding: 40px 0;
 		height: 150px;
@@ -145,6 +151,10 @@ body {
 	}
 	.note-orange {
 		background: $orange;
+		color: $white;
+	}
+	.note-yellow {
+		background: $yellow;
 		color: $white;
 	}
 

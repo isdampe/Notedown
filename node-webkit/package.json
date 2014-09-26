@@ -9,6 +9,6 @@
     "min_width": 770,
     "min_height": 400,
     "height": 800,
-    "toolbar": true
+    "toolbar": false
   }
 }
