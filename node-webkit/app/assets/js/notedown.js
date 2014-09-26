@@ -34,14 +34,28 @@ function noteDown( na ) {
 		noteEditor: document.getElementById("note-edit"),
 		noteEditorTitle: document.getElementById("note-edit-title"),
 		noteEditorContent: document.getElementById("note-edit-editor"),
+		noteEditorColor: document.getElementById("note-edit-color"),
 		noteEditorClose: document.getElementById("editor-close"),
-		noteCurrentEdit: document.getElementById("note-current-edit")
+		noteCurrentEdit: document.getElementById("note-current-edit"),
+		aEls: document.querySelectorAll("[data-rel=color]")
 	};
 	var activeNoteId = -1;
 
+  for (var i = 0; i < this.elements.aEls.length; i++) {
+		this.elements.aEls[i].addEventListener('click', function(e) {
+			e.preventDefault();
+			
+			var color = this.getAttribute('data-color');
+			notedown.elements.noteEditorColor.value = color;
+
+			notedown.syncColors();
+
+		});
+	}
+
 	this.elements.noteCurrentEdit.onclick = function(e) {
 		e.preventDefault();
-		alert(activeNoteId);
+
 		notedown.launchEditor( activeNoteId );
 	}
 
@@ -66,16 +80,39 @@ function noteDown( na ) {
 			//New editor. clear all the fields.
 			notedown.elements.noteEditorTitle.value = '';
 			notedown.elements.noteEditorContent.value = '';
+			notedown.elements.noteEditorColor.value = 'blue';
 		} else {
 			notedown.elements.noteEditorTitle.value = notes[noteID].title;
 			notedown.elements.noteEditorContent.value = notes[noteID].content;
+			notedown.elements.noteEditorColor.value = notes[noteID].color;
 		}
+
+		notedown.syncColors();
 
 		//Fade in editor.
 		notedown.elements.noteEditor.className = "note-edit edit-fadeIn";
 		setTimeout(function(){
 			notedown.elements.noteEditorTitle.focus();
 		},310);
+	}
+
+	this.syncColors = function() {
+
+		var color =  notedown.elements.noteEditorColor.value;
+
+		//Loop through and remove active border class.
+		for (var i = 0; i < this.elements.aEls.length; i++) {
+			this.elements.aEls[i].className = this.elements.aEls[i].className.replace(" block-selected","");
+
+			//Get color of block.
+			var colorNew = this.elements.aEls[i].getAttribute('data-color');
+
+			if ( color === colorNew ) {
+				this.elements.aEls[i].className = this.elements.aEls[i].className + " block-selected";			
+			}
+
+		}
+
 	}
 
 
@@ -150,11 +187,17 @@ function noteDown( na ) {
 			noteElement.parentNode.removeChild(noteElement);
 		}, 500);
 
+		var arrFind = 0;
 		//Remove from array.
 		for ( i=0; i<notes.length; i++ ) {
 			if ( notes[i].id === note.id ) {
 				notes.splice( i, 1 );
+				arrFind = i;
 			}
+		}
+
+		for( i=0; i<notes.length; i++ ) {
+			notes[i].id = i;
 		}
 
 		this.deactivateNote();
