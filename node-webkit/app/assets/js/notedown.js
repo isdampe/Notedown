@@ -310,6 +310,10 @@ function noteDown( opts ) {
 			notedown.elements.noteViewClose.className = "close active";
 			notedown.elements.noteView.innerHTML = eleHTML;
 			notedown.elements.noteView.className = "note-current-view fadeIn note-" + note.color;
+
+			//Hook links.
+			notedown.hookExternalLinks();
+
 			setTimeout(function(){
 				notedown.elements.noteView.className = "note-current-view note-" + note.color;
 			},350);
@@ -369,6 +373,22 @@ function noteDown( opts ) {
 		if ( activeNoteId !== -1 ) {
 			nodes[activeNoteId].className = nodes[activeNoteId].className + " note-active note-active-" + notes[activeNoteId].color;
 		}
+
+	}
+
+	this.hookExternalLinks = function() {
+
+		var linkEls = document.querySelectorAll('a');
+
+    for (var i = 0, len = linkEls.length; i < len; i++) {
+      var linkelement = linkEls[i];
+    	linkelement.addEventListener('click', function(e) {
+    		
+    		e.preventDefault();
+				gui.Shell.openExternal( this.href );
+
+      });
+    }
 
 	}
 
