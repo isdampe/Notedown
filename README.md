@@ -14,9 +14,15 @@ interface for composing and viewing markdown based notes.
 Download pre-built binaries, including node-webkit.
 ==========================================
 
-Windows: [32bit]  
-Linux: [32bit] / [64bit]  
-Mac: [32bit] / [64bit]
+Windows: [w-32bit]  
+Linux: [l-32bit] / [l-64bit]  
+Mac: [m-32bit] / [m-64bit]
+
+[w-32bit]: http://cdn.evasivesoftware.com/notedown/notedown-windows-32.zip
+[l-32bit]: http://cdn.evasivesoftware.com/notedown/notedown-linux-32.zip
+[l-64bit]: http://cdn.evasivesoftware.com/notedown/notedown-linux-64.zip
+[m-32bit]: http://cdn.evasivesoftware.com/notedown/notedown-mac-32.zip
+[m-64bit]: http://cdn.evasivesoftware.com/notedown/notedown-mac-64.zip
 
 How to compile.
 ===============
