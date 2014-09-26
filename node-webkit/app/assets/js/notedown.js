@@ -69,7 +69,7 @@ function noteDown( opts ) {
 				var noteId = notedown.addNotes({
 					title: title,
 					content: content,
-					updated: 1411374670,
+					updated: getTimestamp(),
 					color: color
 				});
 
@@ -85,6 +85,7 @@ function noteDown( opts ) {
 				notes[activeNoteId].title = title;
 				notes[activeNoteId].content = content;
 				notes[activeNoteId].color = color;
+				notes[activeNoteId].updated = getTimestamp();
 
 				notedown.activateNote( notes[activeNoteId] );
 				notedown.switchActiveTabs( this, notes[activeNoteId] );
@@ -291,6 +292,10 @@ function noteDown( opts ) {
 	this.updateNoteTime = function( note, noteMeta ) {
 
 		//Check current unix time stamp vs note.updated timestamp.
+		var currentTime = getTimestamp();
+		var diff = currentTime - note.updated;
+
+		alert(diff);
 
 	}
 
