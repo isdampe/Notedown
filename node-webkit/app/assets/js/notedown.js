@@ -424,7 +424,7 @@ function noteDown( opts ) {
 
 			//Hours and minutes
 			var hours = parseInt(secsDiff / 3600,0);
-			var minutes = secsDiff % 3600;
+			var minutes = parseInt( (secsDiff % 3600) / 60, 0);
 
 			var hourString = ( hours > 1 ? 'hours' : 'hour');
 			var minuteString = ( minutes > 1 ? 'minutes' : 'minute');
