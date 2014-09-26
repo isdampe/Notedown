@@ -196,7 +196,7 @@ function noteDown( opts ) {
 
 		var noteMeta = document.createElement("p");
 		noteMeta.className = "meta";
-		noteMeta.innerHTML = note.updated;
+		noteMeta.innerHTML = notedown.getTimeDiffClean( note.updated, getTimestamp() ) + " ago";
 
 		//Append children.
 		noteHeader.appendChild(noteDelete);
@@ -223,7 +223,7 @@ function noteDown( opts ) {
 		//Update time every minute.
 		setInterval(function(){
 			notedown.updateNoteTime( note, noteMeta );
-		}, 1000 * 60);
+		}, 1000 * 1);
 
 		//Add to list.
 		this.elements.noteList.insertBefore( noteElement, this.elements.noteAddNew );
@@ -292,10 +292,8 @@ function noteDown( opts ) {
 	this.updateNoteTime = function( note, noteMeta ) {
 
 		//Check current unix time stamp vs note.updated timestamp.
-		var currentTime = getTimestamp();
-		var diff = currentTime - note.updated;
-
-		alert(diff);
+		var string = notedown.getTimeDiffClean( note.updated, getTimestamp() );
+		noteMeta.innerHTML = string + " ago";
 
 	}
 
@@ -307,8 +305,13 @@ function noteDown( opts ) {
 		//Set flag.
 		activeNoteId = note.id;
 
+		//The date.
+		var date = new Date(note.updated);
+		var theDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+
+
 		var eleHTML = '<h1 class="title">' + note.title + '</h1>';
-		eleHTML = eleHTML + '<p class="meta">' + note.updated + '</p>';
+		eleHTML = eleHTML + '<p class="meta">' + theDate + '</p>';
 		eleHTML = eleHTML + marked( note.content );
 
 		setTimeout(function(){
@@ -394,6 +397,43 @@ function noteDown( opts ) {
 
       });
     }
+
+	}
+
+	this.getTimeDiffClean = function( previous,now ) {
+
+		var secsDiff = (now - previous) / 1000;
+
+		if ( secsDiff > 86400 ) {
+			//Days
+		} else if ( secsDiff > 3600 ) {
+
+			//Hours and minutes
+			var hours = parseInt(secsDiff / 3600,0);
+			var minutes = secsDiff % 3600;
+
+			var hourString = ( hours > 1 ? 'hours' : 'hour');
+			var minuteString = ( minutes > 1 ? 'minutes' : 'minute');
+
+
+			return hours + " " + hourString + ", " + minutes + " " + minuteString;
+
+		} else if ( secsDiff > 60 ) {
+
+			//Minutes
+			var minutes = parseInt(secsDiff / 60, 0);
+			var minuteString = ( minutes > 1 ? 'minutes' : 'minute');
+
+			return minutes + " " + minuteString;
+
+		} else {
+
+			//Seconds.
+
+			var secsDiff = parseInt(secsDiff,0);
+			var secondsString = ( secsDiff > 1 ? 'seconds' : 'second' );
+			return secsDiff + " " + secondsString;
+		}
 
 	}
 
