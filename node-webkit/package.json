@@ -9,7 +9,8 @@
     "min_width": 770,
     "min_height": 400,
     "height": 800,
-    "toolbar": false
+    "toolbar": false,
+    "icon": "app/assets/img/notedown-icon.png"
   },
   "dependencies": {
     "marked": "*",

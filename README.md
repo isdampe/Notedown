@@ -1,4 +1,4 @@
-Notedown - Your notes, with markdown.
+Notedown - Yup, notes with markdown.
 -------------------------------------
 
 Notedown is a node-webkit based NodeJS app for storing
@@ -41,3 +41,8 @@ Install the Node dependencies
 Launch the app
 
 	./nw
+
+Contributing.
+=============
+
+Send pull-requests at will.
