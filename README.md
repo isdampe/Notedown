@@ -11,12 +11,12 @@ interface for composing and viewing markdown based notes.
 
 ![Notedown viewer](screenshot-2.png)
 
-Pre-built binaries, including node-webkit.
+Download pre-built binaries, including node-webkit.
 ==========================================
 
-[Win32]  
-[Linux32] / [Linux64]
-[Mac32] / [Mac64]
+Windows: [32bit]  
+Linux: [32bit] / [64bit]  
+Mac: [32bit] / [64bit]
 
 How to compile.
 ===============
