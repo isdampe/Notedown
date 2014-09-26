@@ -182,6 +182,44 @@ body {
 	.note-current-view {
 		transition: 0.3s all;
 		overflow-x: hidden;
+
+		img {
+			display: block;
+			margin: 1em 0;
+			max-width: 100%;
+			height: auto;
+		}
+	}
+
+	.note-red {
+		a {
+			color: $red;
+		}
+	}
+	.note-blue {
+		a {
+			color: $blue;
+		}
+	}
+	.note-green {
+		a {
+			color: $green;
+		}
+	}
+	.note-purple {
+		a {
+			color: $purple;
+		}
+	}
+	.note-orange {
+		a {
+			color: $orange;
+		}
+	}
+	.note-yellow {
+		a {
+			color: $yellow;
+		}
 	}
 
 	.fadeOut {
@@ -232,6 +270,8 @@ body {
 		font-size: 16px;
 	}
 
+
+
 	p.meta {
 		margin: 0.25em 0 1em 0;
 		opacity: 0.4;
@@ -256,6 +296,18 @@ body {
 		padding-top: 20px;
 		.close {
 			cursor: pointer;
+			opacity: 0;
+			z-index: -99;
+			position: absolute;
+			right: 50px;
+			top: -50px;
+		}
+		.active {
+			opacity: 1;
+			z-index: 1;
+			position: relative;
+			top: auto;
+			right: auto;
 		}
 	}
 

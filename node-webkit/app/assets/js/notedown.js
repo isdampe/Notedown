@@ -4,6 +4,7 @@
 //Load the filesystem library.
 var fs = require('fs');
 var marked = require('marked');
+var gui = require('nw.gui');
 
 //JSON structure.
 var notes = [];
@@ -19,6 +20,7 @@ function noteDown( opts ) {
 		noteList: document.getElementById("note-list"),
 		noteAddNew: document.getElementById("note-add-new"),
 		noteView: document.getElementById("note-current-view"),
+		noteViewClose: document.getElementById("view-close"),
 		noteEditor: document.getElementById("note-edit"),
 		noteEditorTitle: document.getElementById("note-edit-title"),
 		noteEditorContent: document.getElementById("note-edit-editor"),
@@ -40,6 +42,14 @@ function noteDown( opts ) {
 			notedown.syncColors();
 
 		});
+	}
+
+	this.elements.noteViewClose.onclick = function(e) {
+
+		//Just deactivate the view.
+		notedown.deactivateNote();
+		notedown.loseFocusOnNotes();
+
 	}
 
 	this.elements.noteEditorSave.onclick = function(e) {
@@ -202,8 +212,10 @@ function noteDown( opts ) {
 
 		noteElement.onclick = function(e) {
 			e.preventDefault();
-			notedown.activateNote( note );
-			notedown.switchActiveTabs( this, note );
+			if ( activeNoteId !== note.id ) {
+				notedown.activateNote( note );
+				notedown.switchActiveTabs( this, note );
+			}
 		}
 
 
@@ -295,10 +307,11 @@ function noteDown( opts ) {
 		eleHTML = eleHTML + marked( note.content );
 
 		setTimeout(function(){
+			notedown.elements.noteViewClose.className = "close active";
 			notedown.elements.noteView.innerHTML = eleHTML;
-			notedown.elements.noteView.className = "note-current-view fadeIn";
+			notedown.elements.noteView.className = "note-current-view fadeIn note-" + note.color;
 			setTimeout(function(){
-				notedown.elements.noteView.className = "note-current-view";
+				notedown.elements.noteView.className = "note-current-view note-" + note.color;
 			},350);
 		}, 350);
 
@@ -308,6 +321,7 @@ function noteDown( opts ) {
 
 		//Fade away old notes.
 		this.elements.noteView.className = "note-current-view fadeOut";
+		notedown.elements.noteViewClose.className = "close deactive";
 		activeNoteId = -1;
 
 		setTimeout(function(){
@@ -406,7 +420,11 @@ var notedown = new noteDown({
 	filePath: "app/data/data.json"
 });
 
+//Read the notes saved.
 notedown.readNotesFromDisk();
+
+//Show the window.
+gui.Window.get().show();
 
 //If there's notes, add them.
 notedown.fillSidebar();
