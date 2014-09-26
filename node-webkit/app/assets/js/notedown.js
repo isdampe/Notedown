@@ -1,5 +1,19 @@
-//Notedown.js
-//For local storage of notes.
+/*
+ * Notedown.js
+ *
+ * For keeping track of notes with Markdown.
+ * License: GPL 2.0
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * Enjoy
+ *
+ * Thanks to:
+ * marked (https://github.com/chjj/marked)
+ * Lato fonts (http://www.latofonts.com/)
+ * Node-webkit (https://github.com/rogerwang/node-webkit)
+ *
+ * Written by @isdampe (https://github.com/isdampe)
+ * Send your pull requests to https://github.com/isdampe/Notedown
+ */
 
 //Load the filesystem library.
 var fs = require('fs');
