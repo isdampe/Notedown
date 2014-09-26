@@ -3,6 +3,7 @@
 
 //Load the filesystem library.
 var fs = require('fs');
+var marked = require('marked');
 
 //JSON structure.
 var notes = [];
@@ -291,7 +292,7 @@ function noteDown( opts ) {
 
 		var eleHTML = '<h1 class="title">' + note.title + '</h1>';
 		eleHTML = eleHTML + '<p class="meta">' + note.updated + '</p>';
-		eleHTML = eleHTML + note.content; //(Run this through markdown filter.)
+		eleHTML = eleHTML + marked( note.content );
 
 		setTimeout(function(){
 			notedown.elements.noteView.innerHTML = eleHTML;

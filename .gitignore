@@ -2,7 +2,7 @@ node-webkit/*.so
 node-webkit/nw
 node-webkit/nw.pak
 node-webkit/nwsnapshot
-node-webkit/npm_nodules/*
 .sass-cache/*
 node-webkit/app/data/notes.json
 node-webkit/app/data/data.json
+node-webkit/node_modules/*
