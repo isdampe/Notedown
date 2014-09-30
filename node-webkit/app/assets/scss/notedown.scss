@@ -8,6 +8,10 @@ $yellow: #f1c40f;
 
 @import "fonts";
 
+html, * {
+	-webkit-font-smoothing: antialiased;
+}
+
 body {
 	margin: 0;
 	font-family: 'Lato', sans-serif;
@@ -58,7 +62,7 @@ body {
 			}
 		}
 		p.meta {
-			font-size: 13px;
+			font-size: 16px;
 			margin: 3px 0 0 0;
 			opacity: 0.6;
 			font-family: 'Lato', sans-serif;
@@ -367,6 +371,7 @@ body {
 		padding-bottom: 10px;
 		box-sizing: border-box;
 		border-bottom: 1px solid rgba(255,255,255,0);
+		-webkit-font-smoothing: antialiased;
 	}
 
 	input:focus {
@@ -385,6 +390,7 @@ body {
 		margin-top: 5px;
 		resize: none;
 		background: rgba(255,255,255,0);
+		-webkit-font-smoothing: antialiased;
 	}
 	textarea:focus {
 		outline: none;
@@ -412,6 +418,7 @@ body {
 			transition: 0.5s all;
 			color: #fff;
 			cursor: pointer;
+			-webkit-font-smoothing: antialiased;
 		}
 
 		.publish:hover {

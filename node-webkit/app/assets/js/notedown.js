@@ -419,7 +419,17 @@ function noteDown( opts ) {
 		var secsDiff = (now - previous) / 1000;
 
 		if ( secsDiff > 86400 ) {
+			
 			//Days
+			var days = parseInt(secsDiff / 86400, 0);
+			var hours = parseInt( (secsDiff - (86400 * days)) / 3600, 0); 
+
+			var dayString = ( days > 1 ? 'days' : 'day' );
+			var hourString = ( hours > 1 ? 'hours' : 'hour' );
+
+			return days + " " + dayString + ", " + hours + " " + hourString;
+
+
 		} else if ( secsDiff > 3600 ) {
 
 			//Hours and minutes
