@@ -20,7 +20,7 @@ body {
 	background: #f7f7f7;
 }
 
-.note-list {
+.note-list-wrapper {
 	position: fixed;
 	width: 29.1%;
 	max-width: 350px;
@@ -29,6 +29,10 @@ body {
 	left: 0;
 	background: #f1f1f1;
 	z-index: 5;
+}
+
+.note-list {
+	height: auto;	
 
 	.note-block {
 		width: 100%;
@@ -165,6 +169,7 @@ body {
 	}
 
 }
+
 
 .note-view {
 	position: fixed;

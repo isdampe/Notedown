@@ -58,6 +58,61 @@ function noteDown( opts ) {
 		});
 	}
 
+	this.elements.noteList.addEventListener("mousewheel", function(e){
+		
+		//Manage scrolling.
+		var scrollSpeed = 50;
+
+		var direction = "none";
+
+		if ( e.wheelDelta < 0 ) {
+			direction = "down";
+		} else {
+			direction = "up";
+		}
+
+		if( direction === "none" ) {
+			return;
+		}
+
+		//Get total height.
+		var height = notedown.elements.noteList.offsetHeight;
+		var winHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+		//Get the offset of the top.
+		var offsetTop = notedown.elements.noteList.offsetTop;
+
+		if ( direction === "down" ) {
+			
+			//Scroll down
+			var futureMargin = offsetTop - scrollSpeed;
+
+			//Figure max negative margin.
+			var maxMargin = (height - winHeight) * -1;
+			
+			if ( futureMargin < maxMargin ) {
+				futureMargin = maxMargin;
+			}
+
+		} else if ( direction === "up" ) {
+
+			//Scroll up
+			var futureMargin = offsetTop + scrollSpeed;
+
+			//Figure max negative margin.
+			var maxMargin = 0;
+			
+			if ( futureMargin > maxMargin ) {
+				futureMargin = maxMargin;
+			}
+
+		}
+
+		//Move the bar.
+		notedown.elements.noteList.style.marginTop = futureMargin + "px";
+
+	});
+
 	this.elements.noteViewClose.onclick = function(e) {
 
 		//Just deactivate the view.
