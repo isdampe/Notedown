@@ -20,7 +20,7 @@ Windows: [w-32bit]
 Linux: [l-32bit] / [l-64bit]  
 Mac: [m-32bit] / [m-64bit]
 
-[w-32bit]: http://cdn.evasivesoftware.com/notedown/notedown-windows32.zip
+[w-32bit]: http://cdn.evasivesoftware.com/notedown/notedown-win32.zip
 [l-32bit]: http://cdn.evasivesoftware.com/notedown/notedown-linux32.zip
 [l-64bit]: http://cdn.evasivesoftware.com/notedown/notedown-linux64.zip
 [m-32bit]: http://cdn.evasivesoftware.com/notedown/notedown-mac32.zip
