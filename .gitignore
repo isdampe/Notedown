@@ -2,6 +2,7 @@ node-webkit/*.so
 node-webkit/nw
 node-webkit/nw.pak
 node-webkit/nwsnapshot
+node-webkit/*.dat
 .sass-cache/*
 node-webkit/app/data/notes.json
 node-webkit/app/data/data.json
