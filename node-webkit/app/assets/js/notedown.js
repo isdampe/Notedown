@@ -59,7 +59,7 @@ function noteDown( opts ) {
 	}
 
 	this.elements.noteList.addEventListener("mousewheel", function(e){
-		
+
 		//Manage scrolling.
 		var scrollSpeed = 50;
 
@@ -78,6 +78,10 @@ function noteDown( opts ) {
 		//Get total height.
 		var height = notedown.elements.noteList.offsetHeight;
 		var winHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+		if ( height < winHeight ) {
+			return;
+		}
 
 		//Get the offset of the top.
 		var offsetTop = notedown.elements.noteList.offsetTop;
