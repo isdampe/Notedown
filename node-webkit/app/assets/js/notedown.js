@@ -578,6 +578,15 @@ var notedown = new noteDown({
 //Read the notes saved.
 notedown.readNotesFromDisk();
 
+//Enable MenuBar and common key shortcuts 
+var nativeMenuBar = new gui.Menu({ type: "menubar" });
+try {
+    nativeMenuBar.createMacBuiltin("Notedown");
+    gui.Window.get().menu = nativeMenuBar;
+} catch (ex) {
+    console.log(ex.message);
+}
+
 //Show the window.
 gui.Window.get().show();
 
