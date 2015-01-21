@@ -133,7 +133,14 @@ function noteDown( opts ) {
 		var content = notedown.elements.noteEditorContent.value;
 		var color = notedown.elements.noteEditorColor.value;
 
-		if ( title !== "" ) {
+		if ( (title !== "") || (content !== "") ) {
+
+			//If document has no title it will be saved as an "untitled document"
+			if ((content !== "") && (title === "")) {
+
+				title = "untitled document";
+				
+			}
 
 			//Can save.
 			if ( activeNoteId === -1 ) {
