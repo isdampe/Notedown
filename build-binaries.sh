@@ -13,6 +13,12 @@ rm prebuilt/*.zip
 echo "Moving latest build to prebuilt/src/"
 cp node-webkit/* prebuilt/src/ -R
 
+echo "Removing data.json"
+rm prebuilt/src/app/data/data.json
+
+echo "Moving data.json.example to data.json"
+mv prebuilt/src/app/data/data.json.example prebuilt/src/app/data/data.json
+
 echo "Removing dev files"
 rm prebuilt/src/nw
 rm prebuilt/src/nw.pak
@@ -22,7 +28,7 @@ cp prebuilt/src/* prebuilt/cache -R
 
 #Generate zips.
 #Win32
-cp prebuilt/node-webkit-binaries/node-webkit-v0.10.5-win-ia32/* prebuilt/cache -R
+cp prebuilt/node-webkit-binaries/node-webkit-v0.11.6-win-ia32/* prebuilt/cache -R
 
 echo "Change dir to prebuilt/cache"
 cd prebuilt/cache
@@ -38,7 +44,7 @@ rm prebuilt/cache/* -Rf
 #OSX32
 echo "Copying build files to cache";
 cp prebuilt/src/* prebuilt/cache -R
-cp prebuilt/node-webkit-binaries/node-webkit-v0.10.5-osx-ia32/* prebuilt/cache -R
+cp prebuilt/node-webkit-binaries/node-webkit-v0.11.6-osx-ia32/* prebuilt/cache -R
 
 echo "Change dir to prebuilt/cache"
 cd prebuilt/cache
@@ -53,7 +59,7 @@ rm prebuilt/cache/* -Rf
 #OSX64
 echo "Copying build files to cache";
 cp prebuilt/src/* prebuilt/cache -R
-cp prebuilt/node-webkit-binaries/node-webkit-v0.10.5-osx-x64/* prebuilt/cache -R
+cp prebuilt/node-webkit-binaries/node-webkit-v0.11.6-osx-x64/* prebuilt/cache -R
 
 echo "Change dir to prebuilt/cache"
 cd prebuilt/cache
@@ -68,7 +74,7 @@ rm prebuilt/cache/* -Rf
 #*Nix32
 echo "Copying build files to cache";
 cp prebuilt/src/* prebuilt/cache -R
-cp prebuilt/node-webkit-binaries/node-webkit-v0.10.5-linux-ia32/* prebuilt/cache -R
+cp prebuilt/node-webkit-binaries/node-webkit-v0.11.6-linux-ia32/* prebuilt/cache -R
 
 echo "Change dir to prebuilt/cache"
 cd prebuilt/cache
@@ -84,7 +90,7 @@ rm prebuilt/cache/* -Rf
 #*Nix64
 echo "Copying build files to cache";
 cp prebuilt/src/* prebuilt/cache -R
-cp prebuilt/node-webkit-binaries/node-webkit-v0.10.5-linux-x64/* prebuilt/cache -R
+cp prebuilt/node-webkit-binaries/node-webkit-v0.11.6-linux-x64/* prebuilt/cache -R
 
 echo "Change dir to prebuilt/cache"
 cd prebuilt/cache
@@ -96,4 +102,3 @@ cd ../../
 
 echo "Clearing build cache"
 rm prebuilt/cache/* -Rf
-

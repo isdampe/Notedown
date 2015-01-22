@@ -26,11 +26,12 @@ var nodes = [];
 
 //The main noteDown object.
 //This controls almost everything.
-function noteDown( opts ) {
+(function(opts,window) {
 
 	this.opts = opts;
-	
+
 	this.elements = {
+
 		noteList: document.getElementById("note-list"),
 		noteAddNew: document.getElementById("note-add-new"),
 		noteView: document.getElementById("note-current-view"),
@@ -43,25 +44,27 @@ function noteDown( opts ) {
 		noteCurrentEdit: document.getElementById("note-current-edit"),
 		aEls: document.querySelectorAll("[data-rel=color]"),
 		noteEditorSave: document.getElementById("note-edit-publish")
+
 	};
+
 	var activeNoteId = -1;
 
-  for (var i = 0; i < this.elements.aEls.length; i++) {
-		this.elements.aEls[i].addEventListener('click', function(e) {
+	this.addColorHook = function(element) {
+		element.addEventListener('click', function(e) {
 			e.preventDefault();
-			
+
 			var color = this.getAttribute('data-color');
 			notedown.elements.noteEditorColor.value = color;
 
 			notedown.syncColors();
 
 		});
-	}
+	};
 
 	this.elements.noteList.addEventListener("mousewheel", function(e){
 
 		//Manage scrolling.
-		var scrollSpeed = 50;
+		var scrollSpeed = 50, futureMargin, maxMargin;
 
 		var direction = "none";
 
@@ -87,13 +90,13 @@ function noteDown( opts ) {
 		var offsetTop = notedown.elements.noteList.offsetTop;
 
 		if ( direction === "down" ) {
-			
+
 			//Scroll down
-			var futureMargin = offsetTop - scrollSpeed;
+			futureMargin = offsetTop - scrollSpeed;
 
 			//Figure max negative margin.
-			var maxMargin = (height - winHeight) * -1;
-			
+			maxMargin = (height - winHeight) * -1;
+
 			if ( futureMargin < maxMargin ) {
 				futureMargin = maxMargin;
 			}
@@ -101,11 +104,11 @@ function noteDown( opts ) {
 		} else if ( direction === "up" ) {
 
 			//Scroll up
-			var futureMargin = offsetTop + scrollSpeed;
+			futureMargin = offsetTop + scrollSpeed;
 
 			//Figure max negative margin.
-			var maxMargin = 0;
-			
+			maxMargin = 0;
+
 			if ( futureMargin > maxMargin ) {
 				futureMargin = maxMargin;
 			}
@@ -123,7 +126,7 @@ function noteDown( opts ) {
 		notedown.deactivateNote();
 		notedown.loseFocusOnNotes();
 
-	}
+	};
 
 	this.elements.noteEditorSave.onclick = function(e) {
 		e.preventDefault();
@@ -133,14 +136,12 @@ function noteDown( opts ) {
 		var content = notedown.elements.noteEditorContent.value;
 		var color = notedown.elements.noteEditorColor.value;
 
-		if ( (title !== "") || (content !== "") ) {
+		//If there's content, but no title, default to untitled.
+		if ( title === "" && content !== "" ) {
+			title = "Untitled";
+		}
 
-			//If document has no title it will be saved as an "untitled document"
-			if ((content !== "") && (title === "")) {
-
-				title = "untitled document";
-				
-			}
+		if ( title !== "" ) {
 
 			//Can save.
 			if ( activeNoteId === -1 ) {
@@ -177,7 +178,7 @@ function noteDown( opts ) {
 
 			//Once everything is saved, reload entire sidebar.
 			notedown.sidebarEmpty();
-			
+
 			//Refill sidebar.
 			notedown.fillSidebar();
 
@@ -190,13 +191,13 @@ function noteDown( opts ) {
 
 		notedown.elements.noteEditor.className = "note-edit inactive";
 
-	}
+	};
 
 	this.elements.noteCurrentEdit.onclick = function(e) {
 		e.preventDefault();
 
 		notedown.launchEditor( activeNoteId );
-	}
+	};
 
 	this.elements.noteEditorClose.onclick = function(e) {
 		e.preventDefault();
@@ -204,7 +205,7 @@ function noteDown( opts ) {
 		//Close the editor.
 		//No need to save / add.
 		notedown.elements.noteEditor.className = "note-edit inactive";
-	}
+	};
 
 	this.elements.noteAddNew.onclick = function(e) {
 		e.preventDefault();
@@ -213,8 +214,7 @@ function noteDown( opts ) {
 		notedown.deactivateNote();
 		notedown.loseFocusOnNotes();
 		notedown.launchEditor(-1);
-
-	}
+	};
 
 	this.launchEditor = function( noteID ){
 
@@ -236,7 +236,8 @@ function noteDown( opts ) {
 		setTimeout(function(){
 			notedown.elements.noteEditorTitle.focus();
 		},310);
-	}
+
+	};
 
 	this.syncColors = function() {
 
@@ -250,16 +251,16 @@ function noteDown( opts ) {
 			var colorNew = this.elements.aEls[i].getAttribute('data-color');
 
 			if ( color === colorNew ) {
-				this.elements.aEls[i].className = this.elements.aEls[i].className + " block-selected";			
+				this.elements.aEls[i].className = this.elements.aEls[i].className + " block-selected";
 			}
 
 		}
 
-	}
+	};
 
 
 	this.addNoteToSidebar = function( note ) {
-		
+
 		//Create a dom object.
 		var noteElement = document.createElement("div");
 		noteElement.className = "note-block note-" + note.color;
@@ -289,7 +290,7 @@ function noteDown( opts ) {
 			e.preventDefault();
 			e.stopPropagation();
 			notedown.deleteNote( note, noteElement );
-		}
+		};
 
 		noteElement.onclick = function(e) {
 			e.preventDefault();
@@ -297,7 +298,7 @@ function noteDown( opts ) {
 				notedown.activateNote( note );
 				notedown.switchActiveTabs( this, note );
 			}
-		}
+		};
 
 
 		//Update time every minute.
@@ -313,7 +314,7 @@ function noteDown( opts ) {
 		//Push to array.
 		nodes.push( noteElement );
 
-	}
+	};
 
 	this.switchActiveTabs = function( tab, note ) {
 
@@ -322,7 +323,7 @@ function noteDown( opts ) {
 		//Activate this tab.
 		tab.className = tab.className + " note-active note-active-" + note.color;
 
-	}
+	};
 
 	this.loseFocusOnNotes = function() {
 		var currentMatches = document.querySelectorAll(".note-active");
@@ -332,7 +333,7 @@ function noteDown( opts ) {
 			removeClass(currentMatches[i],"note-active");
 
 		}
-	}
+	};
 
 	this.deleteNote = function( note, noteElement ) {
 
@@ -367,7 +368,7 @@ function noteDown( opts ) {
 		notedown.loseFocusOnNotes();
 		notedown.writeCacheToDisk();
 
-	}
+	};
 
 	this.updateNoteTime = function( note, noteMeta ) {
 
@@ -375,7 +376,7 @@ function noteDown( opts ) {
 		var string = notedown.getTimeDiffClean( note.updated, getTimestamp() );
 		noteMeta.innerHTML = string + " ago";
 
-	}
+	};
 
 	this.activateNote = function ( note ) {
 
@@ -407,7 +408,7 @@ function noteDown( opts ) {
 			},350);
 		}, 350);
 
-	}
+	};
 
 	this.deactivateNote = function() {
 
@@ -424,7 +425,7 @@ function noteDown( opts ) {
 			},350);
 		}, 350);
 
-	}
+	};
 
 	this.addNotes = function( noteObject ) {
 
@@ -434,7 +435,7 @@ function noteDown( opts ) {
 
 		return noteId;
 
-	}
+	};
 
 	this.sidebarEmpty = function() {
 
@@ -447,7 +448,7 @@ function noteDown( opts ) {
 		//The bar has been emptied. Redeclare the nodes array.
 		nodes = [];
 
-	}
+	};
 
 	this.fillSidebar = function() {
 
@@ -462,36 +463,42 @@ function noteDown( opts ) {
 			nodes[activeNoteId].className = nodes[activeNoteId].className + " note-active note-active-" + notes[activeNoteId].color;
 		}
 
-	}
+	};
 
 	this.hookExternalLinks = function() {
 
 		var linkEls = document.querySelectorAll('a');
 
     for (var i = 0, len = linkEls.length; i < len; i++) {
-      var linkelement = linkEls[i];
-    	linkelement.addEventListener('click', function(e) {
-    		
-    		e.preventDefault();
-				gui.Shell.openExternal( this.href );
-
-      });
+    	notedown.externalLinkCallback(linkEls[i]);
     }
 
-	}
+	};
+
+	this.externalLinkCallback = function(element) {
+
+		element.addEventListener('click', function(e) {
+
+			e.preventDefault();
+			gui.Shell.openExternal( this.href );
+
+		});
+
+	};
 
 	this.getTimeDiffClean = function( previous,now ) {
 
+		var days, hours, dayString, hourString, minutes, minuteString, secondsString;
 		var secsDiff = (now - previous) / 1000;
 
 		if ( secsDiff > 86400 ) {
-			
-			//Days
-			var days = parseInt(secsDiff / 86400, 0);
-			var hours = parseInt( (secsDiff - (86400 * days)) / 3600, 0); 
 
-			var dayString = ( days > 1 ? 'days' : 'day' );
-			var hourString = ( hours > 1 ? 'hours' : 'hour' );
+			//Days
+			days = parseInt(secsDiff / 86400, 0);
+			hours = parseInt( (secsDiff - (86400 * days)) / 3600, 0);
+
+			dayString = ( days > 1 ? 'days' : 'day' );
+			hourString = ( hours > 1 ? 'hours' : 'hour' );
 
 			return days + " " + dayString + ", " + hours + " " + hourString;
 
@@ -499,11 +506,11 @@ function noteDown( opts ) {
 		} else if ( secsDiff > 3600 ) {
 
 			//Hours and minutes
-			var hours = parseInt(secsDiff / 3600,0);
-			var minutes = parseInt( (secsDiff % 3600) / 60, 0);
+			hours = parseInt(secsDiff / 3600,0);
+			minutes = parseInt( (secsDiff % 3600) / 60, 0);
 
-			var hourString = ( hours > 1 ? 'hours' : 'hour');
-			var minuteString = ( minutes > 1 ? 'minutes' : 'minute');
+			hourString = ( hours > 1 ? 'hours' : 'hour');
+			minuteString = ( minutes > 1 ? 'minutes' : 'minute');
 
 
 			return hours + " " + hourString + ", " + minutes + " " + minuteString;
@@ -511,8 +518,8 @@ function noteDown( opts ) {
 		} else if ( secsDiff > 60 ) {
 
 			//Minutes
-			var minutes = parseInt(secsDiff / 60, 0);
-			var minuteString = ( minutes > 1 ? 'minutes' : 'minute');
+			minutes = parseInt(secsDiff / 60, 0);
+			minuteString = ( minutes > 1 ? 'minutes' : 'minute');
 
 			return minutes + " " + minuteString;
 
@@ -520,12 +527,12 @@ function noteDown( opts ) {
 
 			//Seconds.
 
-			var secsDiff = parseInt(secsDiff,0);
-			var secondsString = ( secsDiff > 1 ? 'seconds' : 'second' );
+			secsDiff = parseInt(secsDiff,0);
+			secondsString = ( secsDiff > 1 ? 'seconds' : 'second' );
 			return secsDiff + " " + secondsString;
 		}
 
-	}
+	};
 
 	this.writeCacheToDisk = function() {
 
@@ -538,27 +545,29 @@ function noteDown( opts ) {
 				alert("There was an error saving your file to " + notedown.opts.filePath );
 			}
 		} );
-		
-	}
+
+	};
 
 	this.readNotesFromDisk = function() {
+
+		var jsonBuffer;
 
 		//Is there a file?
 		if ( fs.existsSync( notedown.opts.filePath, function(){} ) ) {
 
 			//Ready the file.
 			var buffer = fs.readFileSync( notedown.opts.filePath, "utf8", function(err){});
-			
+
 			//Check for valid json.
 			try {
-        var json = JSON.parse( buffer );
+        jsonBuffer = JSON.parse( buffer );
     	} catch (e) {
-        var json = -1;
+        jsonBuffer = -1;
     	}
 
-    	if ( json !== -1 ) {
+    	if ( jsonBuffer !== -1 ) {
     		//Valid json.
-    		notes = json;
+    		notes = jsonBuffer;
     	} else {
     		//Invalid file.
     		alert("Your data file is corrupt. We're going to automatically right over this. If you want to back it up, you should do so before saving any notes. You can find the file here.\n\n" + notedown.opts.filePath );
@@ -566,20 +575,33 @@ function noteDown( opts ) {
 
 		}
 
-	}
+	};
 
-}
+	this.init = function() {
 
-//Create notedown object.
-var notedown = new noteDown({
-	filePath: "app/data/data.json"
-});
+		//Color hooks.
+		for (var i = 0; i < this.elements.aEls.length; i++) {
+			this.addColorHook(this.elements.aEls[i]);
+		}
 
-//Read the notes saved.
-notedown.readNotesFromDisk();
+		//Read the notes saved.
+		notedown.readNotesFromDisk();
 
-//Show the window.
-gui.Window.get().show();
+		//Enable cmd keys on OSX.
+		var mb = new gui.Menu({type:"menubar"});
+		if ( typeof mb.createMacBuiltin !== "undefined" ) {
+			mb.createMacBuiltin("notedown");
+			gui.Window.get().menu = mb;
+		}
 
-//If there's notes, add them.
-notedown.fillSidebar();
+		//Show the window.
+		gui.Window.get().show();
+
+		//If there's notes, add them.
+		notedown.fillSidebar();
+	};
+
+	window.notedown = this;
+	notedown.init();
+
+})({filePath: "app/data/data.json"}, window);

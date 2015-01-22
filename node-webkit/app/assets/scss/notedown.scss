@@ -32,7 +32,7 @@ body {
 }
 
 .note-list {
-	height: auto;	
+	height: auto;
 
 	.note-block {
 		width: 100%;
@@ -329,7 +329,6 @@ body {
 		text-transform: uppercase;
 		font-size: 13px;
 		opacity: 0.5;
-		transition: 0.5s all;
 
 		.edit {
 			cursor: pointer;
@@ -345,7 +344,7 @@ body {
 
 
 .note-edit {
-	z-index: 10;
+	z-index: 99;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -496,14 +495,12 @@ body {
     width: 5px;
     background: rgba(0,0,0,0);
 }
- 
+
 ::-webkit-scrollbar-track {
     border-radius: 5px;
     background: rgba(0,0,0,0);
 }
 
-
- 
 ::-webkit-scrollbar-thumb {
     border-radius: 5px;
     background: rgba(0,0,0,0.5);
