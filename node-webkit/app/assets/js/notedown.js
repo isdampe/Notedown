@@ -570,7 +570,7 @@ var nodes = [];
     		notes = jsonBuffer;
     	} else {
     		//Invalid file.
-    		alert("Your data file is corrupt. We're going to automatically right over this. If you want to back it up, you should do so before saving any notes. You can find the file here.\n\n" + notedown.opts.filePath );
+    		alert("Your data file is corrupt. We're going to automatically write over this. If you want to back it up, you should do so before saving any notes. You can find the file here.\n\n" + notedown.opts.filePath );
     	}
 
 		}
