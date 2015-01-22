@@ -14,7 +14,7 @@ interface for composing and viewing markdown based notes.
 Download pre-built binaries, including node-webkit.
 ==========================================
 
-> Last build 1/10/2014
+> Last build 22/1/2015
 
 Windows: [w-32bit]  
 Linux: [l-32bit] / [l-64bit]  
