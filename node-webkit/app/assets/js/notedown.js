@@ -551,18 +551,18 @@ function noteDown( opts ) {
 			
 			//Check for valid json.
 			try {
-        var json = JSON.parse( buffer );
-    	} catch (e) {
-        var json = -1;
-    	}
+				var json = JSON.parse( buffer );
+			} catch (e) {
+				var json = -1;
+			}
 
-    	if ( json !== -1 ) {
-    		//Valid json.
-    		notes = json;
-    	} else {
-    		//Invalid file.
-    		alert("Your data file is corrupt. We're going to automatically right over this. If you want to back it up, you should do so before saving any notes. You can find the file here.\n\n" + notedown.opts.filePath );
-    	}
+			if ( json !== -1 ) {
+				//Valid json.
+				notes = json;
+			} else {
+				//Invalid file.
+				alert("Your data file is corrupt. We're going to automatically right over this. If you want to back it up, you should do so before saving any notes. You can find the file here.\n\n" + notedown.opts.filePath );
+			}
 
 		}
 
