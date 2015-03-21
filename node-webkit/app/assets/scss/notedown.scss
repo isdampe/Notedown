@@ -22,172 +22,184 @@ body {
 
 .note-list-wrapper {
 	position: fixed;
-	width: 29.1%;
+	width: 5%;
 	max-width: 350px;
 	height: 100%;
 	top: 0;
 	left: 0;
 	background: #f1f1f1;
 	z-index: 5;
-}
+	transition-duration: .5s;
 
-.note-list {
-	height: auto;
+	&:hover{
+		width: 29.1%;
 
-	.note-block {
-		width: 100%;
-		height: 112px;
-		box-sizing: border-box;
-		padding: 10px 11px 32px 32px;
-		font-family: 'Lato', sans-serif;
-		cursor: pointer;
-		transition: 0.5s all;
+		* {display: block;}
+	}
 
-		header {
-			font-family: Ubuntu Mono, sans-serif;
-			font-weight: 800;
-			font-size: 14px;
-			text-align: right;
+	.note-list {
+		height: auto;
 
-			.close {
-				padding: 5px;
-				cursor: pointer;
-			}
-		}
-
-		h2 {
-			margin: 6px 0 0 0;
-			width: 85%;
-			overflow: hidden;
-			font-weight: 100!important;
-			font-size: 22px;
-			@media all and (max-width: 850px) {
-				font-size: 20px;
-			}
-		}
-		p.meta {
-			font-size: 16px;
-			margin: 3px 0 0 0;
-			opacity: 0.6;
+		.note-block {
+			width: 100%;
+			height: 112px;
+			box-sizing: border-box;
+			padding: 10px 11px 32px 32px;
 			font-family: 'Lato', sans-serif;
+			cursor: pointer;
+			transition: 0.5s all;
+
+			> * {display: none;}
+
+			header {
+				font-family: Ubuntu Mono, sans-serif;
+				font-weight: 800;
+				font-size: 14px;
+				text-align: right;
+
+				.close {
+					padding: 5px;
+					cursor: pointer;
+				}
+			}
+
+			h2 {
+				margin: 6px 0 0 0;
+				width: 85%;
+				overflow: hidden;
+				font-weight: 100!important;
+				font-size: 22px;
+				@media all and (max-width: 850px) {
+					font-size: 20px;
+				}
+			}
+			p.meta {
+				font-size: 16px;
+				margin: 3px 0 0 0;
+				opacity: 0.6;
+				font-family: 'Lato', sans-serif;
+			}
 		}
-	}
 
-	.note-block:hover {
-		opacity: 0.85;
-		width: 102%;
-	}
-
-	.note-active:after {
-		display: block;
-		position: absolute;
-		width: 18px;
-		height: 18px;
-		background: $purple;
-		content: " ";
-		right: 0;
-		margin-right: -8px;
-		margin-top: -33px;
-		-webkit-transform: rotate(-45deg);
-		transition: 0.5s all;
-	}
-
-	.note-active:hover:after {
-		margin-right: -15px;
-	}
-
-	.note-active-red:after {
-		background: $red;
-	}
-
-	.note-active-blue:after {
-		background: $blue;
-	}
-
-	.note-active-purple:after {
-		background: $purple;
-	}
-
-	.note-active-green:after {
-		background: $green;
-	}
-
-	.note-active-orange:after {
-		background: $orange;
-	}
-
-	.note-active-yellow:after {
-		background: $yellow;
-	}
-
-	.note-new {
-		padding: 40px 0;
-		height: 150px;
-		color: #999;
-		transition: 0.5s all;
-
-		h2 {
-			text-align: center;
-			padding: 15px 0;
+		.note-block:hover {
+			opacity: 0.85;
+			width: 102%;
+			h2 {
+				display: block;
+			}
 		}
-	}
 
-	.note-new:hover {
-		background: #ddd;
-	}
+		.note-active:after {
+			display: block;
+			position: absolute;
+			width: 18px;
+			height: 18px;
+			background: $purple;
+			content: " ";
+			right: 0;
+			margin-right: -8px;
+			margin-top: -7.5px;
+			-webkit-transform: rotate(-45deg);
+			transition: 0.5s all;
+		}
 
-	.note-delete {
-		margin-left: -100%;
-		height: 0;
-		padding: 0;
-		opacity: 0;
-	}
+		.note-active:hover:after {
+			margin-top: 7.5px;
+			margin-right: -15px;
+		}
 
-	.note-blue {
-		background: $blue;
-		color: $white;
-	}
-	.note-purple {
-		background: $purple;
-		color: $white;
-	}
-	.note-green {
-		background: $green;
-		color: $white;
-	}
-	.note-red {
-		background: $red;
-		color: $white;
-	}
-	.note-orange {
-		background: $orange;
-		color: $white;
-	}
-	.note-yellow {
-		background: $yellow;
-		color: $white;
-	}
+		.note-active-red:after {
+			background: $red;
+		}
 
+		.note-active-blue:after {
+			background: $blue;
+		}
+
+		.note-active-purple:after {
+			background: $purple;
+		}
+
+		.note-active-green:after {
+			background: $green;
+		}
+
+		.note-active-orange:after {
+			background: $orange;
+		}
+
+		.note-active-yellow:after {
+			background: $yellow;
+		}
+
+		.note-new {
+			padding: 40px 0;
+			height: 150px;
+			color: #999;
+			transition: 0.5s all;
+
+			h2 {
+				text-align: center;
+				padding: 15px 0;
+			}
+		}
+
+		.note-new:hover {
+			background: #ddd;
+		}
+
+		.note-delete {
+			margin-left: -100%;
+			height: 0;
+			padding: 0;
+			opacity: 0;
+		}
+
+		.note-blue {
+			background: $blue;
+			color: $white;
+		}
+		.note-purple {
+			background: $purple;
+			color: $white;
+		}
+		.note-green {
+			background: $green;
+			color: $white;
+		}
+		.note-red {
+			background: $red;
+			color: $white;
+		}
+		.note-orange {
+			background: $orange;
+			color: $white;
+		}
+		.note-yellow {
+			background: $yellow;
+			color: $white;
+		}
+
+	}
 }
-
 
 .note-view {
 	position: fixed;
 	right: 0;
 	top: 0;
-	width: 69%;
+	width: 100%;
 	height: 100%;
 	font-family: 'Lato', sans-serif;
 	color: #444;
 	background: #f7f7f7;
 	box-sizing: border-box;
-	padding: 0 25px;
+	padding: 0 25px 0 75px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 
 	@media all and (min-width: 1200px) {
 		width: 100%;
-		padding: 0 35px 0 390px;
+		padding: 0 35px 0 100px;
 	}
 
 	.note-current-view {
