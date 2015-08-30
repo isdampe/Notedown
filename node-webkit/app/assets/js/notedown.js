@@ -61,6 +61,55 @@ var nodes = [];
 		});
 	};
 
+	this.addShortcutsHook = function(){
+
+		var keyMap = [];
+		keyMap["addNote"] = ["ctrl+n"];
+		keyMap["editNote"] = ["ctrl+e"];
+		keyMap["publishNote"] = ["ctrl+s"];
+		keyMap["discardNote"] = ["ctrl+d","esc"];
+
+		var publishCurrentNote = function(e){
+			this.elements.noteEditorSave.click();
+			return false;
+		};
+
+		var discardCurrentNote = function(e){
+			this.elements.noteEditorClose.click();
+			return false;
+		};
+
+		var editCurrentNote = function(e){
+			this.elements.noteCurrentEdit.click();
+			return false;
+		};
+
+		var addNote = function(e){
+			this.elements.noteAddNew.click();
+			return false;
+		};
+
+		var hook = function( elem, keys, callback ){
+			Mousetrap(elem).bind(keys,callback);
+		};
+
+		//Add note
+		hook(document,keyMap["addNote"],addNote);
+
+		//Edit note
+		hook(document,keyMap["editNote"],editCurrentNote);
+		hook(this.elements.noteEditorTitle,keyMap["editNote"],editCurrentNote);
+		hook(this.elements.noteEditorContent,keyMap["editNote"],editCurrentNote);
+
+		//Publish note
+		hook(this.elements.noteEditorTitle,keyMap["publishNote"],publishCurrentNote);
+		hook(this.elements.noteEditorContent,keyMap["publishNote"],publishCurrentNote);
+
+		//Discard note
+		hook(this.elements.noteEditorTitle,keyMap["discardNote"],discardCurrentNote);
+		hook(this.elements.noteEditorContent,keyMap["discardNote"],discardCurrentNote);
+	};
+
 	this.elements.noteList.addEventListener("mousewheel", function(e){
 
 		//Manage scrolling.
@@ -257,7 +306,6 @@ var nodes = [];
 		}
 
 	};
-
 
 	this.addNoteToSidebar = function( note ) {
 
@@ -578,6 +626,9 @@ var nodes = [];
 	};
 
 	this.init = function() {
+
+		//Shortcuts
+		this.addShortcutsHook();
 
 		//Color hooks.
 		for (var i = 0; i < this.elements.aEls.length; i++) {
