@@ -1,0 +1,44 @@
+pre{
+    background-color: #f2f2f2;
+    padding:16px;
+    border:1px solid rgba(0,0,0,.1);
+    overflow: auto;
+}
+
+/*----------------------------*/
+/*PRETTY TABLES*/
+/*----------------------------*/
+
+.note-current-view table{
+    display: block;
+    width: 100%;
+    overflow: auto;
+    word-break: keep-all;
+    border-color: rgba(0,0,0,.1);
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.note-current-view table thead{
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+.note-current-view table td,
+.note-current-view table th{
+    padding: 6px 13px;
+    border: 1px solid #ddd;
+}
+
+.note-current-view table th{
+    font-weight: bold;
+}
+
+.note-current-view table tr:nth-child(2n){
+    background-color: #f2f2f2;
+}
+
+.note-current-view table tr{
+    border-top: 1px solid rgba(0,0,0,.1);
+}

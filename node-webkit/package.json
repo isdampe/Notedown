@@ -13,7 +13,9 @@
     "icon": "app/assets/img/notedown-icon.png"
   },
   "dependencies": {
+    "fs": "*",
+    "highlight.js": "^8.7.0",
     "marked": "*",
-    "fs": "*"
+    "mousetrap": "^1.5.3"
   }
 }

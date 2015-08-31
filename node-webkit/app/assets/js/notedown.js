@@ -61,6 +61,67 @@ var nodes = [];
 		});
 	};
 
+	this.addShortcutsHook = function(){
+
+		var keyMap = [];
+		keyMap["addNote"] = ["ctrl+n"];
+		keyMap["editNote"] = ["ctrl+e"];
+		keyMap["publishNote"] = ["ctrl+s"];
+		keyMap["discardNote"] = ["ctrl+d","esc"];
+
+		var publishCurrentNote = function(e){
+			this.elements.noteEditorSave.click();
+			return false;
+		};
+
+		var discardCurrentNote = function(e){
+			this.elements.noteEditorClose.click();
+			return false;
+		};
+
+		var editCurrentNote = function(e){
+			this.elements.noteCurrentEdit.click();
+			return false;
+		};
+
+		var addNote = function(e){
+			this.elements.noteAddNew.click();
+			return false;
+		};
+
+		var hook = function( elem, keys, callback ){
+			Mousetrap(elem).bind(keys,callback);
+		};
+
+		//Add note
+		hook(document,keyMap["addNote"],addNote);
+
+		//Edit note
+		hook(document,keyMap["editNote"],editCurrentNote);
+		hook(this.elements.noteEditorTitle,keyMap["editNote"],editCurrentNote);
+		hook(this.elements.noteEditorContent,keyMap["editNote"],editCurrentNote);
+
+		//Publish note
+		hook(this.elements.noteEditorTitle,keyMap["publishNote"],publishCurrentNote);
+		hook(this.elements.noteEditorContent,keyMap["publishNote"],publishCurrentNote);
+
+		//Discard note
+		hook(this.elements.noteEditorTitle,keyMap["discardNote"],discardCurrentNote);
+		hook(this.elements.noteEditorContent,keyMap["discardNote"],discardCurrentNote);
+	};
+
+	this.parseMarkdown = function(md){
+
+		marked.setOptions({
+			highlight: function (code) {
+				return require('highlight.js').highlightAuto(code).value;
+			}
+		});
+
+		var result = marked(md);
+		return result;
+	};
+
 	this.elements.noteList.addEventListener("mousewheel", function(e){
 
 		//Manage scrolling.
@@ -258,7 +319,6 @@ var nodes = [];
 
 	};
 
-
 	this.addNoteToSidebar = function( note ) {
 
 		//Create a dom object.
@@ -393,7 +453,7 @@ var nodes = [];
 
 		var eleHTML = '<h1 class="title">' + note.title + '</h1>';
 		eleHTML = eleHTML + '<p class="meta">' + theDate + '</p>';
-		eleHTML = eleHTML + marked( note.content );
+		eleHTML = eleHTML + this.parseMarkdown(note.content);
 
 		setTimeout(function(){
 			notedown.elements.noteViewClose.className = "close active";
@@ -578,6 +638,9 @@ var nodes = [];
 	};
 
 	this.init = function() {
+
+		//Shortcuts
+		this.addShortcutsHook();
 
 		//Color hooks.
 		for (var i = 0; i < this.elements.aEls.length; i++) {
