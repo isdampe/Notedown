@@ -110,6 +110,18 @@ var nodes = [];
 		hook(this.elements.noteEditorContent,keyMap["discardNote"],discardCurrentNote);
 	};
 
+	this.parseMarkdown = function(md){
+
+		marked.setOptions({
+			highlight: function (code) {
+				return require('highlight.js').highlightAuto(code).value;
+			}
+		});
+
+		var result = marked(md);
+		return result;
+	};
+
 	this.elements.noteList.addEventListener("mousewheel", function(e){
 
 		//Manage scrolling.
@@ -441,7 +453,7 @@ var nodes = [];
 
 		var eleHTML = '<h1 class="title">' + note.title + '</h1>';
 		eleHTML = eleHTML + '<p class="meta">' + theDate + '</p>';
-		eleHTML = eleHTML + marked( note.content );
+		eleHTML = eleHTML + this.parseMarkdown(note.content);
 
 		setTimeout(function(){
 			notedown.elements.noteViewClose.className = "close active";
