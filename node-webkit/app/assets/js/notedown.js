@@ -336,6 +336,11 @@ var nodes = [];
 	};
 
 	this.deleteNote = function( note, noteElement ) {
+		
+		//Confirm delete.
+		if (! confirm("Are you sure you want to permanently delete this note?") ) {
+			return false;
+		}
 
 		//Do fancy effects.
 		noteElement.className = "note-block note-" + note.color + " note-delete";
@@ -377,6 +382,12 @@ var nodes = [];
 		noteMeta.innerHTML = string + " ago";
 
 	};
+	
+	this.parseMarkdown = function( markdown ) {
+		
+		return marked( markdown );
+		
+	};
 
 	this.activateNote = function ( note ) {
 
@@ -393,7 +404,7 @@ var nodes = [];
 
 		var eleHTML = '<h1 class="title">' + note.title + '</h1>';
 		eleHTML = eleHTML + '<p class="meta">' + theDate + '</p>';
-		eleHTML = eleHTML + marked( note.content );
+		eleHTML = eleHTML + notedown.parseMarkdown( note.content );
 
 		setTimeout(function(){
 			notedown.elements.noteViewClose.className = "close active";
