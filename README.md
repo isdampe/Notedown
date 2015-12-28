@@ -48,7 +48,7 @@ Install the Node dependencies
 
 Launch the app
 
-	./nw
+	nw ./
 
 Contributing.
 =============
